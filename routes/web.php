@@ -11,14 +11,18 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'PagesController@index');
+Route::get('/about', 'PagesController@about');
+Route::get('/contact', 'PagesController@contact');
 
-Route::get('/about', function () {
-    return view('pages/about');
-});
+Route::resource('posts', 'PostsController');
+Route::get('/post', 'PostsController@create');
+Route::get('/{category}/{slug}', 'PostsController@show')->name('post');
+Route::get('/{category}/{slug}/edit', 'PostsController@edit');
 
-Route::get('/users/{id}', function ($id) {
-    return 'This is user '.$id;
-});
+Auth::routes();
+
+Route::get('/dashboard', 'DashboardController@index');
+
+Route::resource('/categories', 'CategoriesController');
+Route::get('/{category}', 'CategoriesController@show')->name('category');
