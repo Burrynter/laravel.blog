@@ -21,7 +21,7 @@ class CreateCatTableAndAddItAndSlugToPosts extends Migration
         });
 
         Schema::table('posts', function($table){
-            $table->string('category');
+            $table->string('category_id');
             $table->string('slug');
         });
 
@@ -37,7 +37,7 @@ class CreateCatTableAndAddItAndSlugToPosts extends Migration
         Schema::dropIfExists('categories');
 
         Schema::table('posts', function($table){
-            $table->dropColumn('category');
+            $table->dropColumn('category_id');
             $table->dropColumn('slug');
         });
     }
