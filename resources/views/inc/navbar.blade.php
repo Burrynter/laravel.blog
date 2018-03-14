@@ -17,6 +17,9 @@
           <a class="nav-link" href="/categories">Категории</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="/tags">Тэги</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="/about">О проекте</a>
         </li>
         <li class="nav-item">

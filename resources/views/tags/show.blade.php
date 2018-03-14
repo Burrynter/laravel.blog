@@ -5,7 +5,7 @@
     <h1>{{$tag->name}}</h1>
     <a href="/tags" class="btn btn-secondary">Тэги</a> <a href="/post" class="btn btn-secondary">Написать пост</a>
     <hr>
-    @if(count($tags->posts) > 0)
+    @if(count($tag->posts) > 0)
         <h3>Посты с тэгом {{$tag->name}}:</h3>
         <?php $postsInRow = 1; ?>
         @foreach($tag->posts->reverse() as $post)

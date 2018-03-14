@@ -1,7 +1,5 @@
 @extends('layouts/basicpage')
 
-
-
 @section('content')
     <div class="container archive">
         <h1>Тэги</h1> 

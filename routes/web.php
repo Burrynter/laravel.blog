@@ -27,5 +27,5 @@ Route::get('/dashboard', 'DashboardController@index');
 Route::resource('/categories', 'CategoriesController');
 Route::get('/{category}', 'CategoriesController@show')->name('category');
 
-Route::get('/tags', 'TagsController@index');
+Route::resource('/tags', 'TagsController');
 Route::get('/tags/{tag}', 'TagsController@show')->name('category');
