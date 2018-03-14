@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Post;
 use App\Category;
+use App\Tag;
 
 class PostsController extends Controller
 {
@@ -54,14 +55,29 @@ class PostsController extends Controller
             'body' => 'required',
             'category' => 'required',
           ]);
-
+        
         // Создать пост
         $post = new Post;
-        $post->title = $request->input('title');
-        $post->body = $request->input('body');
-        $post->user_id = auth()->user()->id;
-        $post->category_id = $request->input('category');
-        $post->save();
+        
+        if($post){        
+            $post->title = $request->input('title');
+            $post->body = $request->input('body');
+            $post->user_id = auth()->user()->id;
+            $post->category_id = $request->input('category');
+            
+            $tagNames = explode(',', $request->get('tags'));
+            $tagIds = [];
+            foreach($tagNames as $tagName){
+                $tag = Tag::firstOrCreate(['name'=>$tagName, 'user_id' => auth()->user()->id]);
+                if($tag){
+                    $tagIds[] = $tag->id;
+                }
+            }
+            $post->save();
+            $post->tags()->sync($tagIds);
+        }
+            
+        
         
         return redirect('/posts')->with('success', 'Пост создан');
     }

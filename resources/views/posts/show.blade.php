@@ -13,7 +13,17 @@
                 </section>
                 
                 <p>{!!$post->body!!}</p>
-
+    <hr>
+    <p>
+        Тэги: 
+        @if(count($post->tags) > 0)
+            @foreach($post->tags as $tag)
+                <a href="/tags/{{$tag->slug}}">{{$tag->name}}</a>
+            @endforeach
+        @else
+            Без тэгов
+        @endif
+    </p>
     <hr>
     @if(!Auth::guest())
         @if(Auth::user()->id == $post->user_id)

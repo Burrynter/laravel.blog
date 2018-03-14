@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Tag;
 
 class TagsController extends Controller
 {
@@ -13,7 +14,7 @@ class TagsController extends Controller
      */
     public function index()
     {
-        $tag = Tag::orderBy('name', 'asc')->get();
+        $tags = Tag::orderBy('name', 'asc')->get();
         return view('tags.index')->with('tags', $tags);
     }
 

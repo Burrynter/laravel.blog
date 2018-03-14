@@ -16,6 +16,10 @@
             {{Form::label('body', 'Пост')}}
             {{Form::textarea('body', '', ['class' => 'form-control', 'id' => 'article-ckeditor', 'placeholder' => 'Текст поста'])}}
         </div>
+        <div class="form-group">
+            {{Form::label('tags', 'Тэги (разделяются запятой)')}}
+            {{Form::text('tags', '', ['class' => 'form-control', 'placeholder' => 'Тэги'])}}
+        </div>
         {{Form::submit('Изменить', ['class' => 'btn btn-primary'])}}
         {{Form::hidden('_method', 'PUT')}}
     {!! Form::close() !!}

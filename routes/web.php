@@ -15,17 +15,19 @@ Route::get('/', 'PagesController@index');
 Route::get('/about', 'PagesController@about');
 Route::get('/contact', 'PagesController@contact');
 
-Route::resource('posts', 'PostsController');
-Route::get('/post', 'PostsController@create');
-Route::get('/{category}/{slug}', 'PostsController@show')->name('post');
-Route::get('/{category}/{slug}/edit', 'PostsController@edit');
+Route::get('/tags', 'TagsController@index');
+Route::get('/tags/{tag}', 'TagsController@show');
 
 Auth::routes();
 
 Route::get('/dashboard', 'DashboardController@index');
 
-Route::resource('/categories', 'CategoriesController');
+Route::resource('posts', 'PostsController');
+Route::get('/post', 'PostsController@create');
+Route::get('/{category}/{slug}', 'PostsController@show')->name('post');
+Route::get('/{category}/{slug}/edit', 'PostsController@edit');
+
+Route::resource('categories', 'CategoriesController');
 Route::get('/{category}', 'CategoriesController@show')->name('category');
 
-Route::resource('/tags', 'TagsController');
-Route::get('/tags/{tag}', 'TagsController@show')->name('category');
+

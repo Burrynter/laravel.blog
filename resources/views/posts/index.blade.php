@@ -18,7 +18,16 @@
                 <section class="meta">
                     <span class="date">Автор: {{$post->user->name}}<br>Дата создания: {{$post->created_at->format('d-m-Y')}}</span>
                     <span class="filing">Категория: <a href="/{{$post->category->slug}}" class="btn btn-outline-secondary">{{$post->category->name}}</a></span>
-                </section>
+                    <span class="filing">Тэги: 
+                        @if(count($post->tags) > 0)
+                            @foreach($post->tags as $tag)
+                                <a href="/tags/{{$tag->slug}}">{{$tag->name}}</a>
+                            @endforeach
+                        @else
+                            Без тэгов
+                        @endif
+                    </span>
+                    </section>
                 <p>
                     {{ str_limit(strip_tags($post->body), 100) }}
                     @if (strlen(strip_tags($post->body)) > 100)
