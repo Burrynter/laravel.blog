@@ -18,6 +18,8 @@ Route::get('/contact', 'PagesController@contact');
 Route::get('/tags', 'TagsController@index');
 Route::get('/tags/{tag}', 'TagsController@show');
 
+Route::resource('comments', 'CommentsController');
+
 Auth::routes();
 
 Route::get('/dashboard', 'DashboardController@index');

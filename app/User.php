@@ -27,6 +27,11 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
     /**
      * 
      * @param string|array $roles
@@ -63,11 +68,18 @@ class User extends Authenticatable
         return null !== $this->roles()->where('name', $role)->first();
     }
 
-    public function posts(){
+    public function posts()
+    {
         return $this->hasMany('App\Post');
     }
 
-    public function tags(){
+    public function tags()
+    {
         return $this->hasMany('App\Tag');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany('App\Comment');
     }
 }

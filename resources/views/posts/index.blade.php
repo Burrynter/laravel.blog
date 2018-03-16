@@ -16,7 +16,10 @@
             <aside class="one-third column olderpost">
                 <h3><a href="/{{$post->category->slug}}/{{$post->slug}}">{{$post->title}}</a></h3>
                 <section class="meta">
-                    <span class="date">Автор: {{$post->user->name}}<br>Дата создания: {{$post->created_at->format('d-m-Y')}}</span>
+                    <span class="date">
+                        Автор: {{$post->user->name}}<br>
+                        Время написания: {{$post->created_at->format('d-m-Y')}} в {{$post->created_at->format('H:i')}}
+                    </span>
                     <span class="filing">Категория: <a href="/{{$post->category->slug}}" class="btn btn-outline-secondary">{{$post->category->name}}</a></span>
                     <span class="filing">Тэги: 
                         @if(count($post->tags) > 0)
@@ -27,6 +30,7 @@
                             Без тэгов
                         @endif
                     </span>
+                    <span>Комментарии: {{$post->comments->count()}}</span>
                     </section>
                 <p>
                     {{ str_limit(strip_tags($post->body), 100) }}

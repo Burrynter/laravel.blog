@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Database\Eloquent\Model;
 
 class DatabaseSeeder extends Seeder
 {
@@ -12,8 +13,8 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // Role comes before User seeder here.
-        $this->call('RoleTableSeeder');
+        $this->call(RoleTableSeeder::class);
         // User seeder will use the roles above created.
-        $this->call('UserTableSeeder');
+        $this->call(UserTableSeeder::class);
     }
 }

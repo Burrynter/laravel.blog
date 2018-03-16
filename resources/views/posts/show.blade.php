@@ -8,7 +8,10 @@
                 <h1>{{$post->title}}</h1>
                 
                 <section class="meta">
-                    <span class="date">Автор: {{$post->user->name}}<br>Дата создания: {{$post->created_at->format('d-m-Y')}}</span><br>
+                    <span class="date">
+                        Автор: {{$post->user->name}}<br>
+                        Время написания: {{$post->created_at->format('d-m-Y')}} в {{$post->created_at->format('H:i')}}
+                    </span><br>
                     <span class="filing">Категория: <a href="/{{$post->category->slug}}" class="btn btn-outline-secondary">{{$post->category->name}}</a></span>
                 </section>
                 
@@ -38,7 +41,45 @@
             {!!Form::close()!!}
         </span>
         @endif
+    <hr>
     @endif
+    
+    <h3>Комментарии</h3>
+    @forelse ($post->comments as $comment)
+        <p>{{ $comment->user->name }}</p>
+        <section class="meta">
+        <span class="date">{{$comment->created_at->format('d-m-Y')}} в {{$comment->created_at->format('H:i')}}</span>
+    </section>
+    <p>{{ $comment->body }}</p>
+
+    @if(Auth::user()->id == $comment->user_id)
+        <span class="filing">            
+            {!!Form::open(['action' => ['CommentsController@destroy', $comment->id], 'method' => 'POST'])!!}
+                {{Form::hidden('url', URL::previous())}}
+                {{Form::hidden('_method', 'DELETE')}}
+                {{Form::submit('Удалить', ['class' => 'btn btn-danger'])}}
+            {!!Form::close()!!}
+        </span>
+    @endif
+
+    <hr>
+    @empty
+    <p>Этот пост ещё не комментировали</p>
+    @endforelse
+
+    @if (Auth::check())
+    {{ Form::open(['route' => ['comments.store'], 'method' => 'POST']) }}
+    <div class="form-group">
+        <p>{{ Form::textarea('body', null, ['size' => '50x2', 'style' => 'background-color: #333;', 'placeholder' => 'Написать комментарий']) }}</p>
+    </div>
+    {{ Form::hidden('post_id', $post->id) }}
+    
+    <p>{{Form::submit('Отправить', ['class' => 'btn btn-primary'])}}</p>
+    {{ Form::close() }}
+    @endif
+
+    
+
             </div>
         </div>
     </div>

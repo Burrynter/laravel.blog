@@ -17,11 +17,6 @@ class Post extends Model
     // Timestamps
     public $timestamps = true;
 
-    public function getRouteKeyName()
-    {
-        return 'slug';
-    }
-
     /**
      * Return the sluggable configuration array for this model.
      *
@@ -34,6 +29,11 @@ class Post extends Model
                 'source' => 'title'
             ]
         ];
+    }
+    
+    public function getRouteKeyName()
+    {
+        return 'slug';
     }
 
     public function user()
@@ -54,5 +54,10 @@ class Post extends Model
     public function roles()
     {
         return $this->belongsToMany('App\Role');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany('App\Comment');
     }
 }

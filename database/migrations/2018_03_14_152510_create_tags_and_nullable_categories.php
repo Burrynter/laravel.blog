@@ -22,13 +22,9 @@ class CreateTagsAndNullableCategories extends Migration
         });
 
         Schema::create('post_tag', function (Blueprint $table) {
+            $table->increments('id');
             $table->integer('post_id')->nullable();
             $table->integer('tag_id')->nullable();
-        });
-        
-        Schema::table('posts', function($table)
-        {
-            $table->integer('category_id')->nullable()->change();
         });
     }
 
@@ -41,10 +37,5 @@ class CreateTagsAndNullableCategories extends Migration
     {
         Schema::dropIfExists('tags');
         Schema::dropIfExists('post_tag');
-        
-        Schema::table('posts', function($table)
-        {
-            $table->string('category_id')->nullable(false)->change();
-        });
     }
 }

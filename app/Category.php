@@ -17,6 +17,11 @@ class Category extends Model
     // Timestamps
     public $timestamps = true;
 
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
     /**
      * Return the sluggable configuration array for this model.
      *
@@ -29,11 +34,6 @@ class Category extends Model
                 'source' => 'name'
             ]
         ];
-    }
-
-    public function getRouteKeyName()
-    {
-        return 'slug';
     }
 
     public function posts()

@@ -59,25 +59,27 @@ class PostsController extends Controller
         // Создать пост
         $post = new Post;
         
-        if($post){        
+        if ($post) {        
             $post->title = $request->input('title');
             $post->body = $request->input('body');
             $post->user_id = auth()->user()->id;
             $post->category_id = $request->input('category');
             
-            $tagNames = explode(',', $request->get('tags'));
-            $tagIds = [];
-            foreach($tagNames as $tagName){
-                $tag = Tag::firstOrCreate(['name'=>$tagName, 'user_id' => auth()->user()->id]);
-                if($tag){
-                    $tagIds[] = $tag->id;
+            $tags = $request->get('tags');
+            if ($tags) {
+                $tagNames = explode(',', $request->get('tags'));
+                $tagIds = [];
+                foreach($tagNames as $tagName){
+                    $tag = Tag::firstOrCreate(['name'=>$tagName, 'user_id' => auth()->user()->id]);
+                    if($tag){
+                        $tagIds[] = $tag->id;
+                    }
                 }
+                $post->save();
+                $post->tags()->sync($tagIds);
             }
-            $post->save();
-            $post->tags()->sync($tagIds);
+            else $post->save();
         }
-            
-        
         
         return redirect('/posts')->with('success', 'Пост создан');
     }

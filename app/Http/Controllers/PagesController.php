@@ -12,7 +12,7 @@ class PagesController extends Controller
     }
     
     public function about() {
-        $title = 'Об авторе';
+        $title = 'GitHub repo:';
         return view('pages.about')->with('title', $title);
     }
 
