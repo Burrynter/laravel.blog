@@ -1,9 +1,9 @@
 @extends('layouts/basicpage')
 
 @section('content')
-    <h3>Написать пост</h3>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6" style="margin-left: auto; margin-right: auto;">
+            <h3>Написать пост</h3>
             {!! Form::open(['action' => 'PostsController@store', 'method' => 'post']) !!}
                 <div class="form-group">
                     {{Form::label('category', 'Категория')}}

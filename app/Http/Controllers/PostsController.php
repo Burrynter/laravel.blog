@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Post;
 use App\Category;
 use App\Tag;
+use App\Comment;
 
 class PostsController extends Controller
 {
@@ -151,6 +152,8 @@ class PostsController extends Controller
         if(auth()->user()->id !== $post->user_id){
             return redirect()->route('category', ['category' => $post->category->slug])->with('error', 'Вы не являетесь автором этого поста');
         }
+
+        Comment::where("post_id", $post->id)->delete();
 
         $post->delete();
         return redirect()->route('category', ['category' => $post->category->slug])->with('success', 'Пост удалён');
