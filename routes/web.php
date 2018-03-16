@@ -11,9 +11,11 @@
 |
 */
 
+//Статические страницы
 Route::get('/', 'PagesController@index');
 Route::get('/about', 'PagesController@about');
 Route::get('/contact', 'PagesController@contact');
+Route::post('/contact', 'PagesController@postContact')->name('contact');
 
 Route::get('/tags', 'TagsController@index');
 Route::get('/tags/{tag}', 'TagsController@show');

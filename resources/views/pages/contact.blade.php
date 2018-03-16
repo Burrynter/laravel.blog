@@ -1,11 +1,12 @@
 @extends('layouts/basicpage')
 
 @section('content')
-    <div class="row">
-        <div class="col-md-12">
+    <div class="row jumbotron" style="background-color: #222;">
+        <div class="col-sm-3" style="margin-left: auto; margin-right: auto;">
             <h1>Обратная связь<h1>
             <hr>
-            <form>
+            <form action="{{ url('/contact') }}" method="POST">
+                {{csrf_field()}}
                 <div class="form-group">
                     <label name="name">Ф.И.О.:</label>
                     <input id="name" name="name" class="form-control" placeholder="Фамилия Имя Отчество">
@@ -19,9 +20,11 @@
                     <input id="email" name="email" class="form-control" placeholder="your-email@example.com">
                 </div>
                 <div class="form-group">
-                    <label name="message">Сообщение:</label>
-                    <textarea id="email" name="email" class="form-control" placeholder="Введите ваше сообщение здесь">
+                    <label name="body">Сообщение:</label>
+                    <textarea id="body" name="body" class="form-control" placeholder="Введите ваше сообщение здесь"></textarea>
                 </div>
+
+                {!! Recaptcha::render([ 'lang' => 'ru' ]) !!}
 
                 <input type="submit" value="Отправить" class="btn btn-success">
             </form>

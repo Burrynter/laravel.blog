@@ -67,6 +67,7 @@ return [
     'not_in' => 'Выбранное значение для :attribute ошибочно.',
     'numeric' => 'Поле :attribute должно быть числом.',
     'present' => 'Поле :attribute должно присутствовать.',
+    'recaptcha' => 'Неверная капча.',
     'regex' => 'Поле :attribute имеет ошибочный формат.',
     'required' => 'Поле :attribute обязательно для заполнения.',
     'required_if' => 'Поле :attribute обязательно для заполнения, когда :other равно :value.',
