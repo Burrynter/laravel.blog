@@ -15,7 +15,7 @@
                     <span class="filing">Категория: <a href="/{{$post->category->slug}}" class="btn btn-outline-secondary">{{$post->category->name}}</a></span>
                 </section>
                 
-                <p>{{$post->body}}</p>
+                <p>{!!$post->body!!}</p>
     <hr>
     <section class="meta">
         <span class="filing">
