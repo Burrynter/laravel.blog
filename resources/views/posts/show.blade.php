@@ -17,21 +17,22 @@
                 
                 <p>{!!$post->body!!}</p>
     <hr>
-    <p>
-        Тэги: 
-        @if(count($post->tags) > 0)
-            @foreach($post->tags as $tag)
-                <a href="/tags/{{$tag->slug}}">{{$tag->name}}</a>
-            @endforeach
-        @else
-            Без тэгов
-        @endif
-    </p>
-    <hr>
-    @if(!Auth::guest())
-        @if(Auth::user()->id == $post->user_id)
+    <section class="meta">
         <span class="filing">
-            <a href="{{ action('PostsController@edit', [$post->category->slug, $post->slug]) }}" class="btn btn-primary">Редактировать</a>
+            Тэги: 
+            @if(count($post->tags) > 0)
+                @foreach($post->tags as $tag)
+                    <a href="/tags/{{$tag->slug}}" class="btn btn-outline-secondary">{{$tag->name}}</a>
+                @endforeach
+            @else
+                Без тэгов
+            @endif
+        </span>
+    </section>
+    <hr>
+    @if((Auth::user()->id == $post->user_id) || Auth::user()->hasRole('moderator') || Auth::user()->hasRole('admin'))
+        <span class="filing">
+            <a href="{{ action('PostsController@edit', [$post->category->slug, $post->slug]) }}" class="btn btn-secondary">Редактировать</a>
         </span>
         <span class="filing">
             {!!Form::open(['action' => ['PostsController@destroy', $post->id], 'method' => 'POST'])!!}
@@ -42,7 +43,7 @@
         </span>
         @endif
     <hr>
-    @endif
+
     
     <h3>Комментарии</h3>
     @forelse ($post->comments as $comment)
@@ -52,7 +53,7 @@
     </section>
     <p>{{ $comment->body }}</p>
 
-    @if(Auth::user()->id == $comment->user_id)
+    @if((Auth::user()->id == $comment->user_id) || Auth::user()->hasRole('moderator') || Auth::user()->hasRole('admin'))
         <span class="filing">            
             {!!Form::open(['action' => ['CommentsController@destroy', $comment->id], 'method' => 'POST'])!!}
                 {{Form::hidden('url', URL::previous())}}
@@ -67,19 +68,16 @@
     <p>Этот пост ещё не комментировали</p>
     @endforelse
 
-    @if (Auth::check())
-    {{ Form::open(['route' => ['comments.store'], 'method' => 'POST']) }}
-    <div class="form-group">
-        <p>{{ Form::textarea('body', null, ['size' => '50x2', 'style' => 'background-color: #333;', 'placeholder' => 'Написать комментарий']) }}</p>
-    </div>
-    {{ Form::hidden('post_id', $post->id) }}
-    
-    <p>{{Form::submit('Отправить', ['class' => 'btn btn-primary'])}}</p>
-    {{ Form::close() }}
+    @if (!Auth::guest())
+        {{ Form::open(['route' => ['comments.store'], 'method' => 'POST']) }}
+        <div class="form-group">
+            <p>{{ Form::textarea('body', null, ['size' => '50x2', 'style' => 'background-color: #333;', 'placeholder' => 'Написать комментарий']) }}</p>
+        </div>
+        {{ Form::hidden('post_id', $post->id) }}
+        
+        <p>{{Form::submit('Отправить', ['class' => 'btn btn-secondary'])}}</p>
+        {{ Form::close() }}
     @endif
-
-    
-
             </div>
         </div>
     </div>

@@ -7,13 +7,13 @@
 @endif
 
 @if(session('success'))
-    <div class="alert alert-success">
+    <div class="alert alert-success" style="margin-left: 20%; margin-right: 20%">
         {{session('success')}}
     </div>
 @endif
 
 @if(session('error'))
-    <div class="alert alert-danger">
+    <div class="alert alert-danger" style="margin-left: 20%; margin-right: 20%">
         {{session('error')}}
     </div>
 @endif

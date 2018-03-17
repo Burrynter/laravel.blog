@@ -7,6 +7,7 @@ use App\Post;
 use App\Category;
 use App\Tag;
 use App\Comment;
+use Auth;
 
 class PostsController extends Controller
 {
@@ -54,7 +55,7 @@ class PostsController extends Controller
         $this->validate($request, [
             'title'=>'required|max:225',
             'body' => 'required',
-            'category' => 'required',
+            'category' => 'required'
           ]);
         
         // Создать пост
@@ -68,13 +69,15 @@ class PostsController extends Controller
             
             $tags = $request->get('tags');
             if ($tags) {
-                $tagNames = explode(',', $request->get('tags'));
+                $tagNames = explode(', ', $request->get('tags'));
                 $tagIds = [];
                 foreach($tagNames as $tagName){
-                    $tag = Tag::firstOrCreate(['name'=>$tagName, 'user_id' => auth()->user()->id]);
-                    if($tag){
-                        $tagIds[] = $tag->id;
-                    }
+                    if ($tagName) {
+                        $tag = Tag::firstOrCreate(['name' => $tagName ]);
+                        if($tag){
+                            $tagIds[] = $tag->id;
+                        }
+                    }   
                 }
                 $post->save();
                 $post->tags()->sync($tagIds);
@@ -82,13 +85,14 @@ class PostsController extends Controller
             else $post->save();
         }
         
-        return redirect('/posts')->with('success', 'Пост создан');
+        return redirect()->route('post', ['category' => $post->category->slug, 'post' => $post->slug])->with('success', 'Пост создан');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  str  $category
+     * @param  str  $slug
      * @return \Illuminate\Http\Response
      */
     public function show($category, $slug)
@@ -100,19 +104,26 @@ class PostsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  str  $category
+     * @param  str  $slug
      * @return \Illuminate\Http\Response
      */
     public function edit($category, $slug)
     {
         $post = Post::whereSlug($slug)->firstOrFail();
         
-        // Является ли текущий пользователь автором
-        if(auth()->user()->id !== $post->user_id){
+        // Является ли текущий пользователь автором или модератором/админом
+        if(Auth::user()->id !== $post->user_id && !(Auth::user()->hasRole('moderator') || Auth::user()->hasRole('admin'))){
             return redirect('/posts')->with('error', 'Вы не являетесь автором этого поста');
         }
         
-        return view('posts.edit')->with('post', $post);
+        $categories = Category::all();
+        $catList = [];
+        foreach($categories as $category){
+            $catList[$category->id] = $category->name;
+        }
+
+        return view('posts.edit')->with('data', ['post' => $post, 'categories' => $catList]);
     }
 
     /**
@@ -133,7 +144,27 @@ class PostsController extends Controller
         $post = Post::find($id);
         $post->title = $request->input('title');
         $post->body = $request->input('body');
-        $post->save();
+        
+        if (($request->input('category')) && (Auth::user()->hasRole('moderator') || Auth::user()->hasRole('admin'))) {
+            $post->category_id = $request->input('category');
+        }
+        
+        $tags = $request->get('tags');
+        if ($tags) {
+            $tagNames = explode(', ', $request->get('tags'));
+            $tagIds = [];
+            foreach($tagNames as $tagName){
+                if ($tagName) {
+                    $tag = Tag::firstOrCreate(['name' => $tagName ]);
+                    if($tag){
+                        $tagIds[] = $tag->id;
+                    }
+                }   
+            }
+            $post->save();
+            $post->tags()->sync($tagIds);
+        }
+        else $post->save();
         
         return redirect()->route('post', ['category' => $post->category->slug, 'post' => $post->slug])->with('success', 'Пост изменён');
     }
@@ -148,11 +179,12 @@ class PostsController extends Controller
     {
         $post = Post::find($id);
 
-        // Является ли текущий пользователь автором
-        if(auth()->user()->id !== $post->user_id){
+        // Является ли текущий пользователь автором или модератором/админом
+        if(Auth::user()->id !== $post->user_id && !(Auth::user()->hasRole('moderator') || Auth::user()->hasRole('admin'))){
             return redirect()->route('category', ['category' => $post->category->slug])->with('error', 'Вы не являетесь автором этого поста');
         }
-
+        
+        $post->tags()->detach();
         Comment::where("post_id", $post->id)->delete();
 
         $post->delete();

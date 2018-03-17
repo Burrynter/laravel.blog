@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Tag;
+use Auth;
 
 class TagsController extends Controller
 {
@@ -82,6 +83,15 @@ class TagsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if ( Auth::user()->hasRole('admin') ) {
+        
+            $tag = Tag::find($id);
+            $tag->posts()->detach();
+            $tag->delete();
+            
+            return redirect('/manage/tags')->with('success', 'Тэг удалён');
+        }
+
+        return redirect('/manage/tags')->with('success', 'Недостаточно прав');
     }
 }

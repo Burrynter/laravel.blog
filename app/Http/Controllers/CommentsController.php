@@ -98,9 +98,9 @@ class CommentsController extends Controller
         $comment = Comment::find($id);
         $post = Post::findOrFail($comment->post_id);
 
-        // Является ли текущий пользователь автором
-        if(auth()->user()->id !== $comment->user_id){
-            return redirect()->route('post', [$post->category->slug, $post->slug])->with('error', 'Вы не являетесь автором этого поста');
+        // Является ли текущий пользователь автором или модератором/админом
+        if(Auth::user()->id !== $comment->user_id && !(Auth::user()->hasRole('moderator') || Auth::user()->hasRole('admin'))){
+            return redirect()->route('post', [$post->category->slug, $post->slug])->with('error', 'Вы не являетесь автором этого комментария');
         }
 
         $comment->delete();

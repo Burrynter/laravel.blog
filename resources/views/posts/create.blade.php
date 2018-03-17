@@ -21,7 +21,7 @@
                     {{Form::label('tags', 'Тэги (разделяются запятой)')}}
                     {{Form::text('tags', '', ['class' => 'form-control', 'placeholder' => 'Тэги'])}}
                 </div>
-                {{Form::submit('Создать', ['class' => 'btn btn-primary'])}}
+                {{Form::submit('Создать', ['class' => 'btn btn-secondary'])}}
             {!! Form::close() !!}
         </div>
     </div>

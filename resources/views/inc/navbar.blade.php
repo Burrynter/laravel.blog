@@ -39,6 +39,10 @@
               {{ Auth::user()->name }} <span class="caret"></span>
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              @if(Auth::user()->hasRole('admin'))
+                <a class="dropdown-item" href="/manage">Управление</a>
+              @endif
+
               <a class="dropdown-item" href="/dashboard">Ваши посты</a>
               
               <a class="dropdown-item" href="{{ route('logout') }}"

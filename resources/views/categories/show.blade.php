@@ -25,7 +25,7 @@
                         <span class="filing">Тэги: 
                         @if(count($post->tags) > 0)
                             @foreach($post->tags as $tag)
-                                <a href="/tags/{{$tag->slug}}">{{$tag->name}}</a>
+                                <a href="/tags/{{$tag->slug}}" class="btn btn-outline-secondary">{{$tag->name}}</a>
                             @endforeach
                         @else
                             Без тэгов

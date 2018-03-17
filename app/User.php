@@ -73,11 +73,6 @@ class User extends Authenticatable
         return $this->hasMany('App\Post');
     }
 
-    public function tags()
-    {
-        return $this->hasMany('App\Tag');
-    }
-
     public function comments()
     {
         return $this->hasMany('App\Comment');

@@ -12,7 +12,7 @@
 */
 
 //Статические страницы
-Route::get('/', 'PagesController@index');
+Route::get('/', 'PagesController@index')->name('home');
 Route::get('/about', 'PagesController@about');
 Route::get('/contact', 'PagesController@contact');
 Route::post('/contact', 'PagesController@postContact')->name('contact');
@@ -26,12 +26,34 @@ Auth::routes();
 
 Route::get('/dashboard', 'DashboardController@index');
 
-Route::resource('posts', 'PostsController');
-Route::get('/post', 'PostsController@create');
-Route::get('/{category}/{slug}', 'PostsController@show')->name('post');
-Route::get('/{category}/{slug}/edit', 'PostsController@edit');
+//Admin routes
+Route::middleware('role:admin')->group(function () {
+    Route::get('/manage', 'ManagementController@index');
+    
+    Route::get('/manage/categories', 'ManagementController@categories')->name('manage.categories');
+    Route::get('/categories/{category}/edit', 'CategoriesController@edit')->name('edit.category');
+    Route::get('/manage/categories/new', 'CategoriesController@create');
+    
+    Route::get('/manage/posts', 'ManagementController@posts');
+    Route::get('/manage/comments', 'ManagementController@comments');
+    
+    Route::get('/manage/tags', 'ManagementController@tags');
+    Route::delete('manage/tags/{tag}/delete', 'TagsController@destroy');
+    
+    Route::get('/manage/users', 'ManagementController@users');
+    Route::match(['get', 'post'], '/manage/users/role/{user_id}', 'ManagementController@user_roleChange');
+    Route::delete('/manage/users/kill', 'ManagementController@user_kill');
+});
 
-Route::resource('categories', 'CategoriesController');
+Route::resource('/posts', 'PostsController', 
+                ['except' => ['create', 'show', 'edit']]);
+Route::get('/post', 'PostsController@create');
+Route::get('/{category}/{post}', 'PostsController@show')->name('post');
+Route::get('/{category}/{post}/edit', 'PostsController@edit');
+
+Route::resource('/categories', 'CategoriesController',
+                ['except' => ['index', 'show', 'create', 'edit']]);
+Route::get('/categories', 'CategoriesController@index')->name('categories');
 Route::get('/{category}', 'CategoriesController@show')->name('category');
 
 

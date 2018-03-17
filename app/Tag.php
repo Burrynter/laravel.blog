@@ -8,7 +8,7 @@ use Cviebrock\EloquentSluggable\Sluggable;
 class Tag extends Model
 {
     
-    public $fillable = ["name", "slug", "user_id"];
+    public $fillable = ["name", "slug"];
 
     use Sluggable;
 
@@ -19,11 +19,6 @@ class Tag extends Model
                 'source' => 'name'
             ]
         ];
-    }
-    
-    public function user()
-    {
-        return $this->belongsTo('App\User');
     }
 
     public function posts()
