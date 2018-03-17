@@ -24,7 +24,7 @@
                     <textarea id="body" name="body" class="form-control" placeholder="Введите ваше сообщение здесь"></textarea>
                 </div>
 
-                {!! Recaptcha::render([ 'lang' => 'ru' ]) !!}
+                <div class="g-recaptcha" data-sitekey="6LcTQk0UAAAAAGzeZUtqnzqTZcQV60h025Qe8sZS" lang="ru"></div>
 
                 <input type="submit" value="Отправить" class="btn btn-success">
             </form>
