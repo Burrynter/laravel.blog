@@ -42,7 +42,7 @@ Route::middleware('role:admin')->group(function () {
     
     Route::get('/manage/users', 'ManagementController@users');
     Route::match(['get', 'post'], '/manage/users/role/{user_id}', 'ManagementController@user_roleChange');
-    Route::delete('/manage/users/kill', 'ManagementController@user_kill');
+    Route::delete('/manage/users/kill/{user_id}', 'ManagementController@user_kill');
 });
 
 Route::resource('/posts', 'PostsController', 
