@@ -30,18 +30,20 @@
         </span>
     </section>
     <hr>
-    @if((Auth::user()->id == $post->user_id) || Auth::user()->hasRole('moderator') || Auth::user()->hasRole('admin'))
-        <span class="filing">
-            <a href="{{ action('PostsController@edit', [$post->category->slug, $post->slug]) }}" class="btn btn-secondary">Редактировать</a>
-        </span>
-        <span class="filing">
-            {!!Form::open(['action' => ['PostsController@destroy', $post->id], 'method' => 'POST'])!!}
-                {{Form::hidden('url', URL::previous())}}
-                {{Form::hidden('_method', 'DELETE')}}
-                {{Form::submit('Удалить', ['class' => 'btn btn-danger'])}}
-            {!!Form::close()!!}
-        </span>
+    @if (!Auth::guest())
+        @if((Auth::user()->id == $post->user_id) || Auth::user()->hasRole('moderator') || Auth::user()->hasRole('admin'))
+            <span class="filing">
+                <a href="{{ action('PostsController@edit', [$post->category->slug, $post->slug]) }}" class="btn btn-secondary">Редактировать</a>
+            </span>
+            <span class="filing">
+                {!!Form::open(['action' => ['PostsController@destroy', $post->id], 'method' => 'POST'])!!}
+                    {{Form::hidden('url', URL::previous())}}
+                    {{Form::hidden('_method', 'DELETE')}}
+                    {{Form::submit('Удалить', ['class' => 'btn btn-danger'])}}
+                {!!Form::close()!!}
+            </span>
         @endif
+    @endif
     <hr>
 
     
@@ -52,15 +54,17 @@
         <span class="date">{{$comment->created_at->format('d-m-Y')}} в {{$comment->created_at->format('H:i')}}</span>
     </section>
     <p>{{ $comment->body }}</p>
-
-    @if((Auth::user()->id == $comment->user_id) || Auth::user()->hasRole('moderator') || Auth::user()->hasRole('admin'))
-        <span class="filing">            
-            {!!Form::open(['action' => ['CommentsController@destroy', $comment->id], 'method' => 'POST'])!!}
-                {{Form::hidden('url', URL::previous())}}
-                {{Form::hidden('_method', 'DELETE')}}
-                {{Form::submit('Удалить', ['class' => 'btn btn-danger'])}}
-            {!!Form::close()!!}
-        </span>
+    
+    @if (!Auth::guest())
+        @if((Auth::user()->id == $comment->user_id) || Auth::user()->hasRole('moderator') || Auth::user()->hasRole('admin'))
+            <span class="filing">            
+                {!!Form::open(['action' => ['CommentsController@destroy', $comment->id], 'method' => 'POST'])!!}
+                    {{Form::hidden('url', URL::previous())}}
+                    {{Form::hidden('_method', 'DELETE')}}
+                    {{Form::submit('Удалить', ['class' => 'btn btn-danger'])}}
+                {!!Form::close()!!}
+            </span>
+        @endif
     @endif
 
     <hr>

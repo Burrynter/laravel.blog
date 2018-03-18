@@ -15,7 +15,7 @@
                 <aside class="one-third column olderpost">
                     <h3><a href="{{ action('CategoriesController@show', $category) }}">{{$category->name}}</a></h3>
                     <p>
-                        {{$category->desc}}
+                        {!! str_limit($category->desc, 150) !!}
                     </p>
                 </aside>
                 <?php $categoriesInRow++ ?>

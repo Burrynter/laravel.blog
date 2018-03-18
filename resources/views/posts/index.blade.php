@@ -33,8 +33,8 @@
                     <span>Комментарии: {{$post->comments->count()}}</span>
                 </section>
                 <p>
-                    {!! str_limit($post->body, 100) !!}
-                    @if (strlen($post->body) > 100)
+                    {!! str_limit($post->body, 150) !!}
+                    @if (strlen($post->body) > 150)
                         <a href="{{ action('PostsController@show', [$post->category->slug, $post->slug]) }}">Читать далее</a>
                     @endif
                 </p>
