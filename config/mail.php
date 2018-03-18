@@ -42,7 +42,7 @@ return [
     |
     */
 
-    'port' => env('MAIL_PORT', 465),
+    'port' => env('MAIL_PORT', 587),
 
     /*
     |--------------------------------------------------------------------------
@@ -56,7 +56,7 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'novykov.andrii@gmail.com'),
+        'address' => env('MAIL_FROM_ADDRESS', 'laravelmailertest@gmail.com'),
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
@@ -84,9 +84,9 @@ return [
     |
     */
 
-    'username' => env('novykov.andrii@gmail.com'),
+    'username' => env('laravelmailertest@gmail.com '),
 
-    'password' => env('3j3Ck1ma6'),
+    'password' => env('La57ra21vel512'),
 
     /*
     |--------------------------------------------------------------------------
