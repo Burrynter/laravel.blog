@@ -23,7 +23,7 @@
                                 <th>Пост:</th>
                                 <th></th>
                             </tr>
-                            @foreach($comments as $comment)
+                            @foreach($comments->reverse() as $comment)
                                 <tr>
                                     <td>
                                         <p>{{ $comment->user->name }}</p>

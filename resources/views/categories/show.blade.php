@@ -24,7 +24,7 @@
                         </span>
                         <span class="filing">Тэги: 
                         @if(count($post->tags) > 0)
-                            @foreach($post->tags as $tag)
+                            @foreach($post->tags->sortBy('name') as $tag)
                                 <a href="/tags/{{$tag->slug}}" class="btn btn-outline-secondary">{{$tag->name}}</a>
                             @endforeach
                         @else

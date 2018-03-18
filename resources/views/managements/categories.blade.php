@@ -25,7 +25,7 @@
                                 <th></th>
                                 <th></th>
                             </tr>
-                            @foreach($categories as $category)
+                            @foreach($categories->sortBy('name') as $category)
                                 <tr>
                                     <td>
                                         <a href="{{ action('CategoriesController@show', $category->slug) }}">{{$category->name}}</a><br>

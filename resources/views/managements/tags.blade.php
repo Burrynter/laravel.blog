@@ -23,7 +23,7 @@
                                 <th>Посты с тэгом:</th>
                                 <th></th>
                             </tr>
-                            @foreach($tags as $tag)
+                            @foreach($tags->sortBy('name') as $tag)
                                 <tr>
                                     <td>
                                         <a href="/tags/{{$tag->slug}}">{{$tag->name}}</a><br>
