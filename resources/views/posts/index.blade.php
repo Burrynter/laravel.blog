@@ -6,7 +6,9 @@
     <div class="container archive">
         <a href="/post" class="btn btn-secondary">Написать пост</a> 
     <hr>
-    {{$posts->links()}}
+    <div style="background-color: #222;">
+        {{$posts->links()}}
+    </div>
     @if(count($posts) > 0)
     <?php $postsInRow = 1; ?>
         @foreach($posts as $post)
