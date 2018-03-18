@@ -84,9 +84,9 @@ return [
     |
     */
 
-    'username' => env('laravelmailertest@gmail.com '),
+    'username' => env('MAIL_USERNAME', 'laravelmailertest@gmail.com'),
 
-    'password' => env('tnzbjcyjprwqlshs'),
+    'password' => env('MAIL_PASSWORD', 'tnzbjcyjprwqlshs'),
 
     /*
     |--------------------------------------------------------------------------
