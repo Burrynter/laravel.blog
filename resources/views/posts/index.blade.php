@@ -6,7 +6,7 @@
     <div class="container archive">
         <a href="/post" class="btn btn-secondary">Написать пост</a> 
     <hr>
-    <div style="background-color: #222;">
+    <div style="color: #222;">
         {{$posts->links()}}
     </div>
     @if(count($posts) > 0)
