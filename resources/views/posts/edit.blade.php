@@ -27,7 +27,7 @@
                 ?>
 
                 <div class="form-group">
-                    {{Form::label('tags', 'Тэги (разделяются запятой)')}}
+                    {{Form::label('tags', 'Тэги (разделяются запятой с пробелом (", "))')}}
                     {{Form::text('tags', $tagList, ['class' => 'form-control', 'placeholder' => 'Тэги'])}}
                 </div>
                 {{Form::submit('Изменить', ['class' => 'btn btn-secondary'])}}
