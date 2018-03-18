@@ -7,7 +7,7 @@
         <a href="/post" class="btn btn-secondary">Написать пост</a> 
     <hr>
     <div style="color: #222;">
-        {{$posts->links()}}
+        {!!$posts->links()!!}
     </div>
     @if(count($posts) > 0)
     <?php $postsInRow = 1; ?>
