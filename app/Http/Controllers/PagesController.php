@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\User;
+use Auth;
 
 class PagesController extends Controller
 {
@@ -19,15 +20,25 @@ class PagesController extends Controller
     }
 
     public function contactAdmin() {
+        if (Auth::guest()) {
+            return redirect('/login');
+        }
         return view('pages.contactAdmin');
     }
 
     public function contactUser() {
+        if (Auth::guest()) {
+            return redirect('/login');
+        }
         $users = User::all();
         return view('pages.contactUser')->with('users', $users);
     }
 
     public function postContactAdmin(Request $request) {
+        if (Auth::guest()) {
+            return redirect('/login');
+        }
+        
         $this->validate($request ,[
             'name' => 'required|regex:[(?:[A-Za-zА-Яа-я\s\'])]',
             'phone' => 'required|regex:[(\+38\([0-9]{3,}\)-[0-9]{3,}-[0-9]{2,}-[0-9]{2,})]',
@@ -52,6 +63,10 @@ class PagesController extends Controller
     }
 
     public function postContactUser(Request $request) {
+        if (Auth::guest()) {
+            return redirect('/login');
+        }
+        
         $this->validate($request ,[
             'name' => 'required|regex:[(?:[A-Za-zА-Яа-я\s\'])]',
             'phone' => 'required|regex:[(\+38\([0-9]{3,}\)-[0-9]{3,}-[0-9]{2,}-[0-9]{2,})]',

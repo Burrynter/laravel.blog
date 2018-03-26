@@ -23,9 +23,9 @@
                 </div>
                 <div class="form-group">
                     <label name="destination">Адресат:</label>
-                    <select name="destination" size="3" multiple>
+                    <select name="destination" size="2">
                         @foreach($users as $user)
-                    <option value="{{$user->email}}" style="color: #333;">{{$user->name}}</option>
+                    <option value="{{$user->email}}" style="color: #333; font-size: 20px;">{{$user->name}}</option>
                         @endforeach
                     </select>
                 </div>
