@@ -48,7 +48,7 @@ class PagesController extends Controller
             $msg->subject('Обратная связь');
         });
 
-        return redirect('/contactAdmin')->with('success', 'Сообщение отправлено');
+        return redirect()->route('contactAdmin')->with('success', 'Сообщение отправлено');
     }
 
     public function postContactUser(Request $request) {
@@ -73,6 +73,6 @@ class PagesController extends Controller
             $msg->subject('Сообщение от пользователя LaravelBlog');
         });
 
-        return redirect('/contactUser')->with('success', 'Сообщение отправлено');
+        return redirect()->route('contactUser')->with('success', 'Сообщение отправлено');
     }
 }
