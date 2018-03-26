@@ -14,8 +14,10 @@
 //Статические страницы
 Route::get('/', 'PagesController@index')->name('home');
 Route::get('/about', 'PagesController@about');
-Route::get('/contact', 'PagesController@contact');
-Route::post('/contact', 'PagesController@postContact')->name('contact');
+Route::get('/contact/admin', 'PagesController@contactAdmin');
+Route::post('/contact/admin', 'PagesController@postContactAdmin')->name('contactAdmin');
+Route::get('/contact/user', 'PagesController@contactUser');
+Route::post('/contact/user', 'PagesController@postContactUser')->name('contactUser');
 
 Route::get('/tags', 'TagsController@index');
 Route::get('/tags/{tag}', 'TagsController@show');

@@ -3,9 +3,11 @@
 @section('content')
     <div class="row jumbotron" style="background-color: #222;">
         <div class="col-sm-3" style="margin-left: auto; margin-right: auto;">
+            <a href="{{ route('contactAdmin') }}" class="btn btn-secondary">Администратору</a>
+            <a href="{{ route('contactUser') }}" class="btn btn-secondary">Пользователю</a>
             <h1>Обратная связь<h1>
             <hr>
-            <form action="{{ url('/contact') }}" method="POST">
+            <form action="{{ url('/contact/admin') }}" method="POST">
                 {{csrf_field()}}
                 <div class="form-group">
                     <label name="name">Ф.И.О.:</label>
