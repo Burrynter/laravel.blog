@@ -33,8 +33,7 @@ Route::middleware('role:admin')->group(function () {
     Route::get('/manage/categories', 'ManagementController@categories')->name('manage.categories');
     Route::get('/categories/{category}/edit', 'CategoriesController@edit')->name('edit.category');
     Route::get('/manage/categories/new', 'CategoriesController@create');
-    
-    Route::get('/manage/posts', 'ManagementController@posts');
+
     Route::get('/manage/comments', 'ManagementController@comments');
     
     Route::get('/manage/tags', 'ManagementController@tags');
@@ -44,6 +43,10 @@ Route::middleware('role:admin')->group(function () {
     Route::match(['get', 'post'], '/manage/users/role/{user_id}', 'ManagementController@user_roleChange');
     Route::delete('/manage/users/kill/{user_id}', 'ManagementController@user_kill');
 });
+
+Route::get('/manage/posts', 'ManagementController@posts');
+Route::get('/manage/posts/{id}/hide', 'PostsController@hide');
+Route::get('/manage/posts/{id}/publish', 'PostsController@publish');
 
 Route::resource('/posts', 'PostsController', 
                 ['except' => ['create', 'show', 'edit']]);

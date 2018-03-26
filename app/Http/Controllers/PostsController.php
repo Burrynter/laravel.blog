@@ -24,7 +24,7 @@ class PostsController extends Controller
      */
     public function index()
     {
-        $posts = Post::orderBy('id', 'desc')->paginate(6);
+        $posts = Post::where('published', true)->orderBy('id', 'desc')->paginate(3);
         return view('posts.index')->with('posts', $posts);
     }
 
@@ -67,6 +67,11 @@ class PostsController extends Controller
             $post->user_id = auth()->user()->id;
             $post->category_id = $request->input('category');
             
+            if(!(Auth::user()->hasRole('moderator') || Auth::user()->hasRole('admin'))){
+                $post->published = false;
+            } else $post->published = true;
+            
+            
             $tags = $request->get('tags');
             if ($tags) {
                 $tagNames = explode(', ', $request->get('tags'));
@@ -85,7 +90,7 @@ class PostsController extends Controller
             else $post->save();
         }
         
-        return redirect()->route('post', ['category' => $post->category->slug, 'post' => $post->slug])->with('success', 'Пост создан');
+        return redirect()->route('post', ['category' => $post->category->slug, 'post' => $post->slug])->with('success', 'Пост на рассмотрении');
     }
 
     /**
@@ -98,7 +103,10 @@ class PostsController extends Controller
     public function show($category, $slug)
     {
         $post = Post::whereSlug($slug)->firstOrFail();
-        return view('posts.show')->with('post', $post);
+        if (($post->published) || (Auth::user()->id === $post->user_id || Auth::user()->hasRole('moderator') || Auth::user()->hasRole('admin'))) {
+            return view('posts.show')->with('post', $post);
+        } else
+        return redirect('/posts')->with('error', 'Пост на рассмотрении');
     }
 
     /**
@@ -145,6 +153,10 @@ class PostsController extends Controller
         $post->title = $request->input('title');
         $post->body = $request->input('body');
         
+        if(!(Auth::user()->hasRole('moderator') || Auth::user()->hasRole('admin'))){
+            $post->published = false;
+        }
+        
         if (($request->input('category')) && (Auth::user()->hasRole('moderator') || Auth::user()->hasRole('admin'))) {
             $post->category_id = $request->input('category');
         }
@@ -166,7 +178,7 @@ class PostsController extends Controller
         }
         else $post->save();
         
-        return redirect()->route('post', ['category' => $post->category->slug, 'post' => $post->slug])->with('success', 'Пост изменён');
+        return redirect()->route('post', ['category' => $post->category->slug, 'post' => $post->slug])->with('success', 'Пост на рассмотрении');
     }
 
     /**
@@ -189,5 +201,25 @@ class PostsController extends Controller
 
         $post->delete();
         return redirect()->route('category', ['category' => $post->category->slug])->with('success', 'Пост удалён');
+    }
+
+    public function publish($id)
+    {
+        if(Auth::user()->hasRole('moderator') || Auth::user()->hasRole('admin')){
+            $post = Post::find($id);
+            $post->published = true;
+            $post->save();
+            return redirect('/manage/posts')->with('success', 'Пост опубликован');
+        }
+    }
+
+    public function hide($id)
+    {
+        if(Auth::user()->hasRole('moderator') || Auth::user()->hasRole('admin')){
+            $post = Post::find($id);
+            $post->published = false;
+            $post->save();
+            return redirect('/manage/posts')->with('success', 'Пост снят с публикации');
+        }
     }
 }

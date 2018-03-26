@@ -8,10 +8,10 @@
         {!!$category->desc!!}
     </div>
     <hr>
-    @if(count($category->posts) > 0)
+    @if(count($category->posts->where('published', true)) > 0)
         <h3>Посты в категории {{$category->name}}:</h3>
         <?php $postsInRow = 1; ?>
-        @foreach($category->posts->reverse() as $post)
+        @foreach($category->posts->where('published', true)->reverse() as $post)
             @if($postsInRow == 1)
                 <div class="row">
             @endif

@@ -42,6 +42,9 @@
               @if(Auth::user()->hasRole('admin'))
                 <a class="dropdown-item" href="/manage">Управление</a>
               @endif
+              @if(Auth::user()->hasRole('moderator'))
+                <a class="dropdown-item" href="/manage/posts">Все посты</a>
+              @endif
 
               <a class="dropdown-item" href="/dashboard">Ваши посты</a>
               

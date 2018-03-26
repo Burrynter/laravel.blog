@@ -5,7 +5,12 @@
     <div class="container">
         <div class="row">
             <div class="post ten offset-by-one columns">
-                <h1>{{$post->title}}</h1>
+                <h1>
+                    @if(!$post->published)
+                        Пост на рассмотрении<br>
+                    @endif
+                    {{$post->title}}
+                </h1>
                 
                 <section class="meta">
                     <span class="date">
@@ -32,6 +37,17 @@
     <hr>
     @if (!Auth::guest())
         @if((Auth::user()->id == $post->user_id) || Auth::user()->hasRole('moderator') || Auth::user()->hasRole('admin'))
+            @if(Auth::user()->hasRole('moderator') || Auth::user()->hasRole('admin'))
+                @if(!$post->published)
+                    <span class="filing">
+                        <a href="{{ action('PostsController@publish', $post->id) }}" class="btn btn-secondary">Опубликовать</a>
+                    </span>
+                @else
+                    <span class="filing">
+                        <a href="{{ action('PostsController@hide', $post->id) }}" class="btn btn-danger">Спрятать</a>
+                    </span>
+                @endif
+            @endif
             <span class="filing">
                 <a href="{{ action('PostsController@edit', [$post->category->slug, $post->slug]) }}" class="btn btn-secondary">Редактировать</a>
             </span>
