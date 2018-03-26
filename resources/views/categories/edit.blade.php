@@ -9,6 +9,10 @@
                     {{Form::label('name', 'Название')}}
                     {{Form::text('name', $category->name, ['class' => 'form-control', 'placeholder' => 'Название'])}}
                 </div>
+                @if(Auth::user()->hasRole('moderator') || Auth::user()->hasRole('admin'))
+                    {{Form::label('slug', 'URI')}}
+                    {{Form::text('slug', $category->slug, ['class' => 'form-control', 'placeholder' => 'URI'])}}
+                @endif
                 <div class="form-group">
                     {{Form::label('desc', 'Описание')}}
                     {{Form::textarea('desc', $category->desc, ['class' => 'form-control', 'placeholder' => 'Описание категории'])}}

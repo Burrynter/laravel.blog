@@ -12,6 +12,8 @@
                 @if(Auth::user()->hasRole('moderator') || Auth::user()->hasRole('admin'))
                     {{Form::label('category', 'Категория')}}
                     {{Form::select('category', $data['categories'], $data['post']->category_id, ['class'=>'form-control'])}}
+                    {{Form::label('slug', 'URI')}}
+                    {{Form::text('slug', $data['post']->slug, ['class' => 'form-control', 'placeholder' => 'URI'])}}
                 @endif
                 <div class="form-group">
                     {{Form::label('body', 'Пост')}}

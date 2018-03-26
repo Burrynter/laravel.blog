@@ -100,7 +100,8 @@ class CategoriesController extends Controller
             
             $this->validate($request, [
                 'name' => 'required|max:225',
-                'desc' => 'required'
+                'desc' => 'required',
+                'slug' => 'required|max:225'
             ]);
 
             $category = Category::whereSlug($slug)->firstOrFail();
@@ -108,6 +109,7 @@ class CategoriesController extends Controller
             if ($category) {
                 $category->name = $request->input('name');
                 $category->desc = $request->input('desc');
+                $category->slug = $request->input('slug');
                 $category->save();
             }
             return redirect()->route('category', $category->slug)->with('success', 'Категория изменена');

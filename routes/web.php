@@ -38,6 +38,9 @@ Route::middleware('role:admin')->group(function () {
     
     Route::get('/manage/tags', 'ManagementController@tags');
     Route::delete('manage/tags/{tag}/delete', 'TagsController@destroy');
+    Route::get('/manage/tags/{tag}/edit', 'TagsController@edit');
+    Route::put('/manage/tags/{tag}/update', 'TagsController@update');
+    
     
     Route::get('/manage/users', 'ManagementController@users');
     Route::match(['get', 'post'], '/manage/users/role/{user_id}', 'ManagementController@user_roleChange');

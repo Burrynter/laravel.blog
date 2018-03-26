@@ -34,6 +34,7 @@
                                         @endforeach
                                     </td>
                                     <td>
+                                        <a href="{{ action('TagsController@edit', $tag->id) }}" class="btn btn-secondary">Редактировать</a>
                                         {!!Form::open(['action' => ['TagsController@destroy', $tag->id], 'method' => 'POST'])!!}
                                             {{Form::hidden('_method', 'DELETE')}}
                                             {{Form::submit('Удалить', ['class' => 'btn btn-danger'])}}

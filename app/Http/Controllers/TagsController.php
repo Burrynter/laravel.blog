@@ -60,7 +60,12 @@ class TagsController extends Controller
      */
     public function edit($id)
     {
-        //
+        if (Auth::user()->hasRole('admin')) {
+            $tag = Tag::find($id);
+            
+            return view('tags.edit')->with('tag', $tag);
+        }
+        return redirect()->route('/tags')->with('error', 'Недостаточно прав');
     }
 
     /**
@@ -72,7 +77,19 @@ class TagsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|max:225',
+            'slug' => 'required|max:225'
+        ]);
+
+        // Найти тэг
+        $tag = Tag::find($id);
+
+        $tag->name = $request->input('name');
+        $tag->slug = $request->input('slug');
+        $tag->save();
+
+        return redirect('manage/tags/')->with('success', 'Тэг изменён');
     }
 
     /**

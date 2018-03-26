@@ -89,8 +89,10 @@ class PostsController extends Controller
             }
             else $post->save();
         }
-        
-        return redirect()->route('post', ['category' => $post->category->slug, 'post' => $post->slug])->with('success', 'Пост на рассмотрении');
+        if(!(Auth::user()->hasRole('moderator') || Auth::user()->hasRole('admin'))){
+            return redirect()->route('post', ['category' => $post->category->slug, 'post' => $post->slug])->with('success', 'Пост на рассмотрении');
+        } 
+        else return redirect()->route('post', ['category' => $post->category->slug, 'post' => $post->slug])->with('success', 'Пост опубликован');
     }
 
     /**
@@ -145,13 +147,15 @@ class PostsController extends Controller
     {
         $this->validate($request, [
             'title' => 'required|max:225',
-            'body' => 'required'
+            'body' => 'required',
+            'slug' => 'required|max:225'
         ]);
 
         // Найти пост
         $post = Post::find($id);
         $post->title = $request->input('title');
         $post->body = $request->input('body');
+        $post->slug = $request->input('slug');
         
         if(!(Auth::user()->hasRole('moderator') || Auth::user()->hasRole('admin'))){
             $post->published = false;
@@ -178,7 +182,10 @@ class PostsController extends Controller
         }
         else $post->save();
         
-        return redirect()->route('post', ['category' => $post->category->slug, 'post' => $post->slug])->with('success', 'Пост на рассмотрении');
+        if(!(Auth::user()->hasRole('moderator') || Auth::user()->hasRole('admin'))){
+            return redirect()->route('post', ['category' => $post->category->slug, 'post' => $post->slug])->with('success', 'Пост на рассмотрении');
+        } 
+        else return redirect()->route('post', ['category' => $post->category->slug, 'post' => $post->slug])->with('success', 'Пост изменён');
     }
 
     /**
