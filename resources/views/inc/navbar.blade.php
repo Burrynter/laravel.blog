@@ -23,7 +23,7 @@
           <a class="nav-link" href="/about">О проекте</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/contact/admin">Контакты</a>
+          <a class="nav-link" href="/contact">Контакты</a>
         </li>
       </ul>
 
