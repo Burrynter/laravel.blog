@@ -31,6 +31,13 @@ Route::get('/dashboard', 'DashboardController@index');
 //Admin routes
 Route::middleware('role:admin')->group(function () {
     Route::get('/manage', 'ManagementController@index');
+
+    Route::get('/manage/static', 'ManagementController@staticPages');
+    Route::get('/manage/static/{id}/edit', 'ManagementController@editStatic');
+    Route::post('/manage/static/{id}/edit', 'ManagementController@editStatic');
+    Route::put('/manage/static/{id}/update', 'ManagementController@updateStatic');
+    Route::get('/manage/static/{id}/publish', 'ManagementController@publishStatic');
+    Route::get('/manage/static/{id}/hide', 'ManagementController@hideStatic');
     
     Route::get('/manage/categories', 'ManagementController@categories')->name('manage.categories');
     Route::get('/categories/{category}/edit', 'CategoriesController@edit')->name('edit.category');

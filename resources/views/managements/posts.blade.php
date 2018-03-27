@@ -46,7 +46,7 @@
                                             <span>Комментарии: {{$post->comments->count()}}</span>
                                     </td>
                                     <td>
-                                            <a href="{{ action('PostsController@publish', $post->id) }}" class="btn btn-secondary">Опубликовать</a>
+                                        <a href="{{ action('PostsController@publish', $post->id) }}" class="btn btn-secondary">Опубликовать</a>
                                     </td>
                                     <td>
                                         <a href="{{ action('PostsController@edit', [$post->category->slug, $post->slug]) }}" class="btn btn-secondary">Редактировать</a>

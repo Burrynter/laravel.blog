@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\User;
+use App\StaticPage;
 use Auth;
 
 class PagesController extends Controller
@@ -13,17 +14,18 @@ class PagesController extends Controller
         $title = 'Добро пожаловать на LaravelBlog!';
         return view('pages.index')->with('title', $title);
     }
-    
+
     public function about() {
-        $title = 'GitHub repo:';
-        return view('pages.about')->with('title', $title);
+        $about = StaticPage::where('title', 'about')->first();
+        return view('pages.about')->with('about', $about);
     }
 
     public function contactAdmin() {
         if (Auth::guest()) {
             return redirect('/login');
         }
-        return view('pages.contactAdmin');
+        $contact = StaticPage::where('title', 'contact')->first();
+        return view('pages.contactAdmin')->with('contact', $contact);
     }
 
     public function contactUser() {
@@ -31,7 +33,8 @@ class PagesController extends Controller
             return redirect('/login');
         }
         $users = User::all();
-        return view('pages.contactUser')->with('users', $users);
+        $contact = StaticPage::where('title', 'contact')->first();
+        return view('pages.contactUser')->with(['users' => $users, 'contact' => $contact]);
     }
 
     public function postContactAdmin(Request $request) {

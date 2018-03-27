@@ -8,6 +8,7 @@ use App\Tag;
 use App\Post;
 use App\Category;
 use App\Comment;
+use App\StaticPage;
 use Auth;
 
 class ManagementController extends Controller
@@ -50,6 +51,61 @@ class ManagementController extends Controller
     {
         $comments = Comment::all();
         return view('managements.comments')->with('comments', $comments);
+    }
+
+    public function staticPages()
+    {
+        $about = StaticPage::where('title', 'about')->first();
+        $contact = StaticPage::where('title', 'contact')->first();
+        return view('managements.static_pages')->with(['about' => $about, 'contact' => $contact]);
+    }
+
+    public function editStatic($id)
+    {
+        $target = StaticPage::find($id);
+        return view('managements.edit_static')->with('page', $target);
+    }
+
+    public function updateStatic(Request $request, $id)
+    {
+        $page = StaticPage::find($id);
+
+        $this->validate($request, [
+            'name' => 'required|max:225',
+            'desc' => 'required',
+            'body' => 'required'
+        ]);
+        
+        if ($page) {
+            $page->name = $request->input('name');
+            $page->desc = $request->input('desc');
+            $page->body = $request->input('body');
+            $page->published = true;
+
+            $page->save();
+        }
+        
+        return redirect('/manage/static')->with('success', 'Успешно изменено');
+    }
+
+    public function publishStatic($id)
+    {
+        if(Auth::user()->hasRole('admin')){
+            $page = StaticPage::find($id);
+            $page->published = true;
+            $page->save();
+            return redirect('/manage/static')->with('success', 'Контент опубликован');
+        } else return redirect('/')->with('error', 'Нет прав');
+    }
+
+    public function hideStatic($id)
+    {
+        if(Auth::user()->hasRole('admin')){
+            $page = StaticPage::find($id);
+            $page->published = false;
+            $page->save();
+            return redirect('/manage/static')->with('success', 'Контент скрыт');
+        } else return redirect('/')->with('error', 'Нет прав');
     }
 
     public function user_kill($id)
