@@ -8,15 +8,18 @@
         {!!$category->desc!!}
     </div>
     <hr>
-    @if(count($category->posts->where('published', true)) > 0)
+    @if(count($posts->where('published', true)) > 0)
         <h3>Посты в категории {{$category->name}}:</h3>
+        @if($pages)
+            @include('inc.pagination', ['paginator' => $posts])
+        @endif
         <?php $postsInRow = 1; ?>
-        @foreach($category->posts->where('published', true)->reverse() as $post)
+        @foreach($posts->where('published', true)->reverse() as $post)
             @if($postsInRow == 1)
                 <div class="row">
             @endif
             <aside class="one-third column olderpost">
-                <h3><a href="{{ action('PostsController@show', [$category->slug, $post->slug]) }}">{{$post->title}}</a></h3>
+                <h3><a href="{{ action('PostsController@show', [$post->category->slug, $post->slug]) }}">{{$post->title}}</a></h3>
                 <section class="meta">
                         <span class="date">
                             Автор: {{$post->user->name}}<br>

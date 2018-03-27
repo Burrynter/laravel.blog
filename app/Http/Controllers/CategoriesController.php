@@ -68,7 +68,16 @@ class CategoriesController extends Controller
     public function show($slug)
     {
         $category = Category::whereSlug($slug)->firstOrFail();
-        return view('categories.show')->with('category', $category);
+
+        $perPage = 6;
+        $posts = $category->posts()->where('published', true)->get();
+        if (count($posts) > $perPage) {
+            $pages = true;
+            $posts = $category->posts()->where('published', true)->paginate($perPage);
+        } else {
+            $pages = false;
+        }
+        return view('categories.show')->with(['category' => $category, 'posts' => $posts, 'pages' => $pages]);
     }
 
     /**

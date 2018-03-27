@@ -5,10 +5,13 @@
     <h1>{{$tag->name}}</h1>
     <a href="/tags" class="btn btn-secondary">Тэги</a> <a href="/post" class="btn btn-secondary">Написать пост</a>
     <hr>
-    @if(count($tag->posts->where('published', true)) > 0)
+    @if(count($posts->where('published', true)) > 0)
         <h3>Посты с тэгом {{$tag->name}}:</h3>
+        @if($pages)
+            @include('inc.pagination', ['paginator' => $posts])
+        @endif
         <?php $postsInRow = 1; ?>
-        @foreach($tag->posts->where('published', true)->reverse() as $post)
+        @foreach($posts->where('published', true)->reverse() as $post)
             @if($postsInRow == 1)
                 <div class="row">
             @endif

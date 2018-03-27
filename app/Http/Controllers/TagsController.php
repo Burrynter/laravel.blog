@@ -49,7 +49,17 @@ class TagsController extends Controller
     public function show($slug)
     {
         $tag = Tag::whereSlug($slug)->firstOrFail();
-        return view('tags.show')->with('tag', $tag);
+
+        $perPage = 6;
+        $posts = $tag->posts()->where('published', true)->get();
+        if (count($posts) > $perPage) {
+            $pages = true;
+            $posts = $tag->posts()->where('published', true)->paginate($perPage);
+        } else {
+            $pages = false;
+        }
+
+        return view('tags.show')->with(['tag' => $tag, 'posts' => $posts, 'pages' => $pages]);
     }
 
     /**

@@ -10,11 +10,12 @@
         "cviebrock/eloquent-sluggable": "^4.5",
         "doctrine/dbal": "^2.6",
         "fideloper/proxy": "~4.0",
+        "greggilbert/recaptcha": "dev-master",
         "laravel/framework": "5.6.*",
         "laravel/tinker": "~1.0",
         "laravelcollective/html": "^5.4.0",
-        "unisharp/laravel-ckeditor": "^4.7",
-        "greggilbert/recaptcha": "dev-master"
+        "spatie/laravel-paginateroute": "^2.6",
+        "unisharp/laravel-ckeditor": "^4.7"
     },
     "require-dev": {
         "filp/whoops": "~2.0",

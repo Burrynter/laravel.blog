@@ -24,8 +24,15 @@ class PostsController extends Controller
      */
     public function index()
     {
-        $posts = Post::where('published', true)->orderBy('id', 'desc')->paginate(6);
-        return view('posts.index')->with('posts', $posts);
+        $perPage = 6;
+        $posts = Post::where('published', true)->orderBy('id', 'desc')->get();
+        if (count($posts) > $perPage) {
+            $pages = true;
+            $posts = Post::where('published', true)->orderBy('id', 'desc')->paginate($perPage);
+        } else {
+            $pages = false;
+        }
+        return view('posts.index')->with(['posts' => $posts, 'perPage' => $perPage, 'pages' => $pages]);
     }
 
     /**

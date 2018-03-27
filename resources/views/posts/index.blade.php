@@ -6,8 +6,10 @@
     <div class="container archive">
         <a href="/post" class="btn btn-secondary">Написать пост</a> 
     <hr>
-        {{$posts->links()}}
     @if(count($posts) > 0)
+    @if($pages)
+        @include('inc.pagination', ['paginator' => $posts])
+    @endif
     <?php $postsInRow = 1; ?>
         @foreach($posts as $post)
             @if($postsInRow == 1)

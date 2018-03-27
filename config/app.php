@@ -160,11 +160,17 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         
+        // HTML формы
         Collective\Html\HtmlServiceProvider::class,
 
+        // Расширенная форма ввода для постов
         Unisharp\Ckeditor\ServiceProvider::class,
 
+        // Required recaptcha
         Greggilbert\Recaptcha\RecaptchaServiceProvider::class,
+
+        //"Красивые" URL пагинации
+        Spatie\PaginateRoute\PaginateRouteServiceProvider::class,
 
     ],
 
@@ -219,6 +225,8 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
 
         'Recaptcha' => Greggilbert\Recaptcha\Facades\Recaptcha::class,
+
+        'PaginateRoute' => Spatie\PaginateRoute\PaginateRouteFacade::class,
 
     ],
 

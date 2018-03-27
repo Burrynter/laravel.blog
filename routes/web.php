@@ -20,7 +20,7 @@ Route::get('/contact/user', 'PagesController@contactUser');
 Route::post('/contact/user', 'PagesController@postContactUser')->name('contactUser');
 
 Route::get('/tags', 'TagsController@index');
-Route::get('/tags/{tag}', 'TagsController@show');
+Route::paginate('/tags/{tag}', 'TagsController@show');
 
 Route::resource('comments', 'CommentsController');
 
@@ -54,7 +54,8 @@ Route::get('/manage/posts/{id}/hide', 'PostsController@hide');
 Route::get('/manage/posts/{id}/publish', 'PostsController@publish');
 
 Route::resource('/posts', 'PostsController', 
-                ['except' => ['create', 'show', 'edit']]);
+                ['except' => ['index', 'create', 'show', 'edit']]);
+Route::paginate('/posts', ['as' => 'allPosts', 'uses' => 'PostsController@index']);
 Route::get('/post', 'PostsController@create');
 Route::get('/{category}/{post}', 'PostsController@show')->name('post');
 Route::get('/{category}/{post}/edit', 'PostsController@edit');
@@ -62,6 +63,6 @@ Route::get('/{category}/{post}/edit', 'PostsController@edit');
 Route::resource('/categories', 'CategoriesController',
                 ['except' => ['index', 'show', 'create', 'edit']]);
 Route::get('/categories', 'CategoriesController@index')->name('categories');
-Route::get('/{category}', 'CategoriesController@show')->name('category');
+Route::paginate('/{category}', ['as' => 'category', 'uses' => 'CategoriesController@show']);
 
 
