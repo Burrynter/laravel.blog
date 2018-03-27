@@ -99,15 +99,19 @@ class PostsController extends Controller
             }
 
             if($tagsList) {
-                foreach ($tagsList as $key => $tagId) {
-                    // Поправка на индекс массива из формы
-                    $tag = Tag::find($tagId+1);
-                    if ($tag) {
-                        $tagIds[] = $tag->id;
+                $tagNames = Tag::pluck('name')->toArray();
+                foreach ($tagNames as $tagPosOriginal => $tagName) {
+                    foreach ($tagsList as $tagPos) {
+                        if ($tagPos == $tagPosOriginal) {    
+                            $tag = Tag::firstOrCreate(['name' => $tagName ]);
+                            if ($tag) {
+                                $tagIds[] = $tag->id;
+                            }
+                        }
                     }
                 }
             }
-
+            
             if ($tags || $tagsList) {
                 $post->save();
                 $post->tags()->sync($tagIds);
@@ -157,9 +161,21 @@ class PostsController extends Controller
         foreach($categories as $category){
             $catList[$category->id] = $category->name;
         }
-        $allTags = Tag::all();
+
+        $allTags = Tag::pluck('name')->toArray();
+
+        $postTags = $post->tags->pluck('name')->toArray();
+        $keys = [];
+        foreach ($postTags as $tagExists) {
+            foreach ($allTags as $arrKey => $tagName) {
+                if ($tagName == $tagExists) {
+                    $keys[] = $arrKey;
+                }
+            }
+        }
+
         return view('posts.edit')
-                ->with(['post' => $post, 'categories' => $catList, 'allTags' => $allTags]);
+                ->with(['post' => $post, 'categories' => $catList, 'allTags' => $allTags, 'keys' => $keys]);
     }
 
     /**
@@ -213,11 +229,15 @@ class PostsController extends Controller
             }
                 
             if($tagsList) {
-                foreach ($tagsList as $key => $tagId) {
-                    // Поправка на индекс массива из формы
-                    $tag = Tag::find($tagId+1);
-                    if ($tag) {
-                        $tagIds[] = $tag->id;
+                $tagNames = Tag::pluck('name')->toArray();
+                foreach ($tagNames as $tagPosOriginal => $tagName) {
+                    foreach ($tagsList as $tagPos) {
+                        if ($tagPos == $tagPosOriginal) {    
+                            $tag = Tag::firstOrCreate(['name' => $tagName ]);
+                            if ($tag) {
+                                $tagIds[] = $tag->id;
+                            }
+                        }
                     }
                 }
             }

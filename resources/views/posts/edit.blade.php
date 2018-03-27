@@ -19,18 +19,10 @@
                     {{Form::label('body', 'Пост')}}
                     {{Form::textarea('body', $post->body, ['class' => 'form-control', 'id' => 'article-ckeditor', 'placeholder' => 'Текст поста'])}}
                 </div>
-                
-                <?php
-                // Поправка на индекс массива 
-                    $existingTagIds = $post->tags->pluck('id')->all();
-                    $fixedTagIds = [];
-                    foreach ($existingTagIds as $id) {
-                        $fixedTagIds[] = $id-1;
-                    }
-                ?>
+
                 <div class="form-group">
                     {{Form::label('tagsList', 'Существующие тэги (ctrl+клик для множественного выбора):')}}
-                    {{Form::select('tagsList[]', $allTags->pluck('name')->all(), $fixedTagIds, 
+                    {{Form::select('tagsList[]', $allTags, $keys, 
                         ['id' => 'tagsList', 'multiple' => 'multiple', 'size' => '4', 'style' => 'color: #333;'])}}
                 </div>
                 <div class="form-group">
