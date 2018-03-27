@@ -18,7 +18,12 @@
                     {{Form::textarea('body', '', ['class' => 'form-control', 'id' => 'article-ckeditor', 'placeholder' => 'Текст поста'])}}
                 </div>
                 <div class="form-group">
-                    {{Form::label('tags', 'Тэги (разделяются запятой с пробелом (", "))')}}
+                    {{Form::label('tagsList', 'Существующие тэги (ctrl+клик для множественного выбора):')}}
+                    {{Form::select('tagsList[]', $allTags->pluck('name')->all(), null, 
+                        ['id' => 'tagsList', 'multiple' => 'multiple', 'size' => '4', 'style' => 'color: #333;'])}}
+                </div>
+                <div class="form-group">
+                    {{Form::label('tags', 'Новые тэги (разделяются запятой с пробелом (", "))')}}
                     {{Form::text('tags', '', ['class' => 'form-control', 'placeholder' => 'Тэги'])}}
                 </div>
                 {{Form::submit('Создать', ['class' => 'btn btn-secondary'])}}

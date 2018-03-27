@@ -47,7 +47,8 @@ class PostsController extends Controller
         foreach($categories as $category){
             $catList[$category->id] = $category->name;
         }
-        return view('posts.create')->with('categories', $catList);
+        $allTags = Tag::all();
+        return view('posts.create')->with(['categories' => $catList, 'allTags' => $allTags]);
     }
 
     /**
@@ -78,11 +79,15 @@ class PostsController extends Controller
                 $post->published = false;
             } else $post->published = true;
             
-            
             $tags = $request->get('tags');
+            $tagsList = $request->get('tagsList');
+            
+            if ($tags || $tagsList) {
+                $tagIds = [];
+            }
+
             if ($tags) {
                 $tagNames = explode(', ', $request->get('tags'));
-                $tagIds = [];
                 foreach($tagNames as $tagName){
                     if ($tagName) {
                         $tag = Tag::firstOrCreate(['name' => $tagName ]);
@@ -91,11 +96,24 @@ class PostsController extends Controller
                         }
                     }   
                 }
+            }
+
+            if($tagsList) {
+                foreach ($tagsList as $key => $tagId) {
+                    // Поправка на индекс массива из формы
+                    $tag = Tag::find($tagId+1);
+                    if ($tag) {
+                        $tagIds[] = $tag->id;
+                    }
+                }
+            }
+
+            if ($tags || $tagsList) {
                 $post->save();
                 $post->tags()->sync($tagIds);
-            }
-            else $post->save();
+            } else $post->save();
         }
+
         if(!(Auth::user()->hasRole('moderator') || Auth::user()->hasRole('admin'))){
             return redirect()->route('post', ['category' => $post->category->slug, 'post' => $post->slug])->with('success', 'Пост на рассмотрении');
         } 
@@ -139,8 +157,9 @@ class PostsController extends Controller
         foreach($categories as $category){
             $catList[$category->id] = $category->name;
         }
-
-        return view('posts.edit')->with('data', ['post' => $post, 'categories' => $catList]);
+        $allTags = Tag::all();
+        return view('posts.edit')
+                ->with(['post' => $post, 'categories' => $catList, 'allTags' => $allTags]);
     }
 
     /**
@@ -160,34 +179,54 @@ class PostsController extends Controller
 
         // Найти пост
         $post = Post::find($id);
-        $post->title = $request->input('title');
-        $post->body = $request->input('body');
-        $post->slug = $request->input('slug');
-        
-        if(!(Auth::user()->hasRole('moderator') || Auth::user()->hasRole('admin'))){
-            $post->published = false;
-        }
-        
-        if (($request->input('category')) && (Auth::user()->hasRole('moderator') || Auth::user()->hasRole('admin'))) {
-            $post->category_id = $request->input('category');
-        }
-        
-        $tags = $request->get('tags');
-        if ($tags) {
-            $tagNames = explode(', ', $request->get('tags'));
-            $tagIds = [];
-            foreach($tagNames as $tagName){
-                if ($tagName) {
-                    $tag = Tag::firstOrCreate(['name' => $tagName ]);
-                    if($tag){
+
+        if($post) {
+            $post->title = $request->input('title');
+            $post->body = $request->input('body');
+            $post->slug = $request->input('slug');
+            
+            if(!(Auth::user()->hasRole('moderator') || Auth::user()->hasRole('admin'))){
+                $post->published = false;
+            }
+            
+            if (($request->input('category')) && (Auth::user()->hasRole('moderator') || Auth::user()->hasRole('admin'))) {
+                $post->category_id = $request->input('category');
+            }
+            
+            $tags = $request->get('tags');
+            $tagsList = $request->get('tagsList');
+
+            if ($tags || $tagsList) {
+                $tagIds = [];
+            }
+            
+            if ($tags) {
+                $tagNames = explode(', ', $request->get('tags'));
+                foreach($tagNames as $tagName){
+                    if ($tagName) {
+                        $tag = Tag::firstOrCreate(['name' => $tagName ]);
+                        if($tag){
+                            $tagIds[] = $tag->id;
+                        }
+                    }   
+                }
+            }
+                
+            if($tagsList) {
+                foreach ($tagsList as $key => $tagId) {
+                    // Поправка на индекс массива из формы
+                    $tag = Tag::find($tagId+1);
+                    if ($tag) {
                         $tagIds[] = $tag->id;
                     }
-                }   
+                }
             }
-            $post->save();
-            $post->tags()->sync($tagIds);
+
+            if ($tags || $tagsList) {
+                $post->save();
+                $post->tags()->sync($tagIds);
+            } else $post->save();
         }
-        else $post->save();
         
         if(!(Auth::user()->hasRole('moderator') || Auth::user()->hasRole('admin'))){
             return redirect()->route('post', ['category' => $post->category->slug, 'post' => $post->slug])->with('success', 'Пост на рассмотрении');
