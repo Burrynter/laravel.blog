@@ -28,8 +28,10 @@
                 <div class="form-group">
                     <label name="destination">Адресат:</label>
                     <select name="destination" size="2">
-                        @foreach($users as $user)
-                    <option value="{{$user->email}}" style="color: #333; font-size: 20px;">{{$user->name}}</option>
+                        @foreach ($users as $user)
+                            @if (auth()->user()->email !== $user->email)
+                            <option value="{{$user->email}}" style="color: #333; font-size: 20px;">{{$user->name}}</option>
+                            @endif
                         @endforeach
                     </select>
                 </div>
