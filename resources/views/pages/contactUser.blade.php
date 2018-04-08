@@ -5,7 +5,7 @@
         <div class="col-sm-3" style="margin-left: auto; margin-right: auto;">
             @if ($contact->published)
                 {!!$contact->body!!}
-            @else <h1>Maintenance, please check in later</h1>
+            @else <h1>Maintenance is underway, please check in later</h1>
             @endif
             <a href="{{ route('contactAdmin') }}" class="btn btn-secondary">Администратору</a>
             <a href="{{ route('contactUser') }}" class="btn btn-secondary">Пользователю</a>
