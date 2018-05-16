@@ -50,7 +50,6 @@ Route::middleware('role:admin')->group(function () {
     Route::get('/manage/tags/{tag}/edit', 'TagsController@edit');
     Route::put('/manage/tags/{tag}/update', 'TagsController@update');
     
-    
     Route::get('/manage/users', 'ManagementController@users');
     Route::match(['get', 'post'], '/manage/users/role/{user_id}', 'ManagementController@user_roleChange');
     Route::delete('/manage/users/kill/{user_id}', 'ManagementController@user_kill');
@@ -71,5 +70,3 @@ Route::resource('/categories', 'CategoriesController',
                 ['except' => ['index', 'show', 'create', 'edit']]);
 Route::get('/categories', 'CategoriesController@index')->name('categories');
 Route::paginate('/{category}', ['as' => 'category', 'uses' => 'CategoriesController@show']);
-
-
